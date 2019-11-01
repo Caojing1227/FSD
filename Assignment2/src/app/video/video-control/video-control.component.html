@@ -1,0 +1,36 @@
+<div class="container" style="margin-bottom: 20px; width: 600px;">
+
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-2">
+    <button type='button' id='replay-button' class='btn btn-dark' (click)='replayMedia()'>
+      <fa-icon [icon]="['fas', 'reply']"></fa-icon>
+    </button>
+  </div>
+  <div class="col col-lg-2">
+    <button type="button" class="btn btn-dark" (click)='togglePlayPause()'>
+      <fa-icon *ngIf="play" [icon]="['fas', 'pause']"></fa-icon>
+      <fa-icon *ngIf="!play" [icon]="['fas', 'play']"></fa-icon>
+    </button>
+  </div>
+  <div class="col col-lg-2">
+    <button type='button' class='btn btn-dark' (click)='stopPlayer();'>
+      <fa-icon [icon]="['fas', 'stop']"></fa-icon>
+    </button>
+    </div>
+    <div class="col col-lg-2">
+    <button type='button' id='volume-inc-button' class='btn btn-dark' (click)='changeVolume("+")'>
+      <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+    </button>
+    </div>
+    <div class="col col-lg-2">
+    <button type='button' id='volume-dec-button' class='btn btn-dark' (click)='changeVolume("-")'>
+      <fa-icon [icon]="['fas', 'minus']"></fa-icon>
+    </button>
+    </div>
+    <div class="col col-lg-2">
+    <button type='button' class='btn btn-dark' (click)='toggleMute("true")'>
+      <fa-icon *ngIf="!mute" [icon]="['fas', 'volume-up']"></fa-icon>
+      <fa-icon *ngIf="mute" [icon]="['fas', 'volume-mute']"></fa-icon>
+    </button>
+    </div>
+  </div>

@@ -1,0 +1,29 @@
+<div class="container-fluid">
+
+    <table class="table table-dark table-hover">
+        <thead>
+          <tr>
+            <th scope="col">S.no</th>
+            <th scope="col">Title</th>
+            <th scope="col">URL</th>
+            <th scope="col">Action</th>
+            <th scope="col">Like</th>
+            <th scope="col">Unlike</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let video of videos; index as i">
+              <th scope="row" class="col-sm-2">{{ i }}</th>
+              <td class="col-sm-3">{{video.title}}</td>
+              <td></td>
+              <td>Edit | Delete | Approve</td>
+              <td><span class="badge badge-success badge-pill">
+                  <fa-icon [icon]="['fas', 'thumbs-up']"></fa-icon>{{video.likes}}
+                </span></td>
+                <td><span class="badge badge-primary badge-pill">
+                    <fa-icon [icon]="['fas', 'thumbs-down']"></fa-icon> {{video.unlike}}
+                  </span></td>
+            </tr>
+            </tbody>
+            </table>
+</div>

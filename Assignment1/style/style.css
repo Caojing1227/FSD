@@ -1,0 +1,13 @@
+h1 { 
+	text-align: center;
+}
+
+#videoPlayer{
+    display:block;
+    height: 70vh;
+    align-content: center;
+}
+
+h3{
+    text-align: center;
+}

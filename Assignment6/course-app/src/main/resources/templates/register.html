@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<title>FSD Course Center</title>
+<script th:src="@{/webjars/jquery/3.4.1/dist/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/jquery-toast-plugin/1.3.2/dist/jquery.toast.min.js}"></script>
+<link type="text/css" rel="stylesheet" th:href="@{/webjars/font-awesome/5.9.0/css/all.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/webjars/jquery-toast-plugin/1.3.2/dist/jquery.toast.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/layout.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/signup.css}" />
+<script th:inline="javascript">
+  var token = $("meta[name='_csrf']").attr("content");
+  $.ajaxSetup({
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', token);
+      }
+  });
+  
+  function changeCaptcha(){
+    var link = /*[[@{/captcha_image}]]*/ 'test';
+    $(".captcha-image").attr("src", `${link}?ts=${ Date.now()}`);
+  }
+
+  function registerUser() {
+    let data = {
+      name : $('#name').val(),
+      email : $('#email').val(),
+      username : $('#username').val(),
+      password : $('#password').val(),
+      admin : $('#admin').prop('checked'),
+    };
+    
+    var link = /*[[@{/register}]]*/ '/register';
+
+    $.ajax({
+      type : "POST",
+      contentType : "application/json",
+      url : `${link}?kaptcha=` + $('#kaptcha').val(),
+      data : JSON.stringify(data),
+      dataType : 'json',
+      timeout : 100000,
+        }).done(function(res) {
+            $.toast({
+                heading: 'Success',
+                text: 'Registration is successful.',
+                showHideTransition: 'slide',
+                icon: 'success',
+                position: 'top-right'
+            })
+        }).fail(function(res) {
+            $.toast({
+                heading: 'Error',
+                text: res.responseJSON.message,
+                showHideTransition: 'fade',
+                icon: 'error',
+                position: 'top-right'
+            })
+        }).always(function() {
+            // ...
+        });
+  }
+</script>
+</head>
+<body>
+
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+            <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+                <div th:replace="fragments/sidemenu :: search"></div>
+                <div th:replace="fragments/sidemenu :: nav"></div>
+            </div>
+
+            <main class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content" role="main">
+            <form class="form-signup" method="post">
+                <div class="alert alert-danger" role="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+                <p>
+                    <label for="name">Name</label>
+                    <input
+                        type="text" id="name" name="name" class="form-control"
+                        required="" autofocus="" autocomplete="off">
+                </p>
+                <p>
+                    <label for="email">Email</label>
+                     <input
+                        type="email" id="email" name="email" class="form-control"
+                        required="" autocomplete="off">
+                </p>
+                <p>
+                    <label for="username">Username</label>
+                    <input
+                        type="text" id="username" name="username" class="form-control"
+                       required="" autofocus="" autocomplete="off">
+                </p>
+                <p>
+                    <label for="password">Password</label>
+                     <input
+                        type="password" id="password" name="password" class="form-control" required="">
+                </p>
+                <p class="checkbox">
+                        <input type="checkbox" class="form-check-input" id="admin">
+                        <label for="admin">I am an administrator!</label>
+                    </p>
+                <p>
+                    <label> <img th:src="@{/captcha_image}" onclick="changeCaptcha()" width="80" height="34" class="captcha-image" alt="Captcha Code"/>
+                           <a href="javascript:void(0)" class="btn-refresh" onclick="changeCaptcha()"><i class="fas fa-redo"></i></a></label>
+                       <input class="form-control captcha-input" id="kaptcha" name="kaptcha" placeholder="Enter Captcha" required="" autocomplete="off">
+                </p>
+                <p>
+                   <label></label>
+                   <button class="btn btn-success" type="button" onclick="registerUser()"> Register</button>
+                   <button class="btn btn-light ml-4" type="reset" >Reset</button>
+                </p>
+            </div>
+            </main>
+        </div>
+
+    </div>
+
+
+</body>
+</html>
